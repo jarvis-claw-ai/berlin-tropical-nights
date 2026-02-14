@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Berlin Tropical Nights Calendar</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <div class="header-content">
+                <h1 class="title">
+                    <span class="title-icon">🏙️</span>
+                    Berlin Tropical Nights
+                </h1>
+                <p class="subtitle">
+                    Tracking nights where temperature stays above 20°C (68°F)
+                </p>
+                
+                <div class="legend">
+                    <div class="legend-item">
+                        <div class="legend-color tropical-sample" data-temp="25"></div>
+                        <span>Tropical Night (≥20°C)</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color normal-sample"></div>
+                        <span>Regular Night (<20°C)</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color no-data-sample"></div>
+                        <span>No Data</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <main class="main">
+            <div class="year-selector">
+                <div class="year-tabs" id="yearTabs">
+                    <!-- Year tabs will be populated by JavaScript -->
+                </div>
+            </div>
+
+            <div class="stats-panel" id="statsPanel">
+                <!-- Stats will be populated by JavaScript -->
+            </div>
+
+            <div class="calendar-container">
+                <div class="calendar" id="calendar">
+                    <!-- Calendar will be populated by JavaScript -->
+                </div>
+            </div>
+
+            <div class="loading" id="loading">
+                <div class="loading-spinner"></div>
+                <p>Loading weather data...</p>
+            </div>
+
+            <div class="error" id="error" style="display: none;">
+                <p>Failed to load weather data. Please try again later.</p>
+            </div>
+        </main>
+
+        <footer class="footer">
+            <p>
+                Data from <a href="https://open-meteo.com/" target="_blank">Open-Meteo</a> • 
+                Updated nightly • 
+                <a href="https://github.com/jarvis-claw-ai/berlin-tropical-nights" target="_blank">View Source</a>
+            </p>
+        </footer>
+    </div>
+
+    <!-- Tooltip -->
+    <div class="tooltip" id="tooltip">
+        <div class="tooltip-content">
+            <div class="tooltip-date"></div>
+            <div class="tooltip-temp"></div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
