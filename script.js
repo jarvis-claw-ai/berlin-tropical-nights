@@ -20,7 +20,7 @@ class TropicalNightsCalendar {
             'July', 'August', 'September', 'October', 'November', 'December'
         ];
         
-        this.weekdays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+        this.weekdays = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
         
         this.init();
     }
@@ -161,7 +161,10 @@ class TropicalNightsCalendar {
         const firstDay = new Date(year, month, 1);
         const lastDay = new Date(year, month + 1, 0);
         const daysInMonth = lastDay.getDate();
-        const startingDayOfWeek = firstDay.getDay();
+        let startingDayOfWeek = firstDay.getDay();
+        
+        // Convert Sunday (0) to be at end for Monday-first layout
+        startingDayOfWeek = startingDayOfWeek === 0 ? 6 : startingDayOfWeek - 1;
         
         // Add empty cells for days before month starts
         for (let i = 0; i < startingDayOfWeek; i++) {
@@ -188,19 +191,34 @@ class TropicalNightsCalendar {
         const dateKey = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
         const dayData = yearData.get(dateKey);
         
+        // Determine if it's a weekend (Saturday = 6, Sunday = 0)
+        const dayOfWeek = new Date(year, month, day).getDay();
+        const isWeekend = dayOfWeek === 0 || dayOfWeek === 6;
+        
         if (dayData) {
             if (dayData.isTropical) {
                 dayElement.classList.add('tropical');
                 dayElement.setAttribute('data-temp', Math.round(dayData.minTemp));
                 
-                // Add temperature-based styling
+                // Create temperature-based gradient for tropical nights
                 const temp = dayData.minTemp;
-                let intensity = Math.min((temp - 20) / 10, 1); // 0-1 scale
+                const intensity = Math.min(Math.max((temp - 20) / 10, 0), 1); // 0-1 scale, clamped
+                
+                // Orange to red gradient based on how hot above 20°C
+                const hue1 = 25 - (intensity * 15); // Orange (25) to red (10)
+                const hue2 = 15 - (intensity * 15); // Orange-red (15) to deep red (0)
+                const saturation = 85 + (intensity * 15); // More saturated for hotter temps
+                const lightness1 = 65 - (intensity * 15); // Darker for hotter temps
+                const lightness2 = 50 - (intensity * 10);
+                
                 dayElement.style.background = `linear-gradient(135deg, 
-                    hsl(${15 - intensity * 15}, 100%, ${60 + intensity * 10}%), 
-                    hsl(${0}, 100%, ${45 + intensity * 10}%))`;
+                    hsl(${hue1}, ${saturation}%, ${lightness1}%), 
+                    hsl(${hue2}, ${saturation}%, ${lightness2}%))`;
             } else {
                 dayElement.classList.add('normal');
+                if (isWeekend) {
+                    dayElement.classList.add('weekend');
+                }
             }
             
             // Add tooltip data

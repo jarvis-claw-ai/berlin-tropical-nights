@@ -106,15 +106,17 @@ body {
 }
 
 .tropical-sample {
-    background: linear-gradient(135deg, var(--tropical-cold), var(--tropical-hot));
+    background: linear-gradient(135deg, #ff8c42, #dc2626);
 }
 
 .normal-sample {
-    background: var(--normal);
+    background: #e5e7eb;
+    border: 1px solid #d1d5db;
 }
 
 .no-data-sample {
-    background: var(--no-data);
+    background: #fafafa;
+    border: 1px solid #e5e7eb;
 }
 
 /* Main content */
@@ -206,20 +208,23 @@ body {
 
 .calendar {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(3, 1fr);
     gap: 1px;
     background: var(--border);
+    padding: 1px;
 }
 
 .month {
     background: var(--bg-secondary);
-    padding: 20px;
+    padding: 12px;
+    min-height: 200px;
 }
 
 .month-name {
-    font-size: 1.1rem;
+    font-size: 0.9rem;
     font-weight: 600;
-    margin-bottom: 15px;
+    margin-bottom: 8px;
     color: var(--text-primary);
     text-align: center;
 }
@@ -227,15 +232,16 @@ body {
 .month-grid {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
-    gap: 2px;
+    gap: 1px;
 }
 
 .weekday {
     text-align: center;
-    font-size: 0.8rem;
+    font-size: 0.6rem;
     font-weight: 500;
     color: var(--text-muted);
-    padding: 8px 0;
+    padding: 3px 0;
+    text-transform: uppercase;
 }
 
 .day {
@@ -243,52 +249,55 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 0.8rem;
-    border-radius: 4px;
+    font-size: 0.6rem;
+    border-radius: 2px;
     cursor: pointer;
     transition: all 0.2s ease;
     position: relative;
+    font-weight: 500;
+    min-height: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .day:not(.empty):hover {
-    transform: scale(1.1);
+    transform: scale(1.3);
     z-index: 10;
     box-shadow: 0 4px 12px var(--shadow);
+    border: 1px solid var(--accent);
 }
 
 .day.empty {
     pointer-events: none;
+    background: transparent;
+    border: none;
 }
 
+/* Default days - light gray */
 .day.normal {
-    background: var(--normal);
-    color: var(--text-secondary);
-    border: 1px solid #374151;
+    background: #e5e7eb;
+    color: #374151;
+    border: 1px solid #d1d5db;
 }
 
+/* Weekend days - slightly different shade */
+.day.normal.weekend {
+    background: #f3f4f6;
+    color: #4b5563;
+}
+
+/* Tropical nights - warm gradient based on temperature */
 .day.tropical {
     color: white;
-    font-weight: 600;
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    font-weight: 700;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.3);
 }
 
+/* No data / future dates - very light */
 .day.no-data {
-    background: var(--no-data);
-    color: var(--text-muted);
-    border: 1px solid #4b5563;
-}
-
-/* Tropical night temperature gradient */
-.day.tropical[data-temp] {
-    background: linear-gradient(135deg, var(--tropical-cold), var(--tropical-hot));
-}
-
-.day.tropical[data-temp^"2"]:not([data-temp^"20"]) {
-    background: linear-gradient(135deg, #ff8c42, #dc2626);
-}
-
-.day.tropical[data-temp^"3"] {
-    background: linear-gradient(135deg, #dc2626, #b91c1c);
+    background: #fafafa;
+    color: #9ca3af;
+    border: 1px solid #e5e7eb;
 }
 
 /* Tooltip */
@@ -368,6 +377,20 @@ body {
 }
 
 /* Responsive design */
+@media (max-width: 1200px) {
+    .calendar {
+        grid-template-columns: repeat(3, 1fr);
+        grid-template-rows: repeat(4, 1fr);
+    }
+}
+
+@media (max-width: 900px) {
+    .calendar {
+        grid-template-columns: repeat(2, 1fr);
+        grid-template-rows: repeat(6, 1fr);
+    }
+}
+
 @media (max-width: 768px) {
     .container {
         padding: 0 15px;
@@ -387,6 +410,12 @@ body {
     
     .calendar {
         grid-template-columns: 1fr;
+        grid-template-rows: repeat(12, 1fr);
+    }
+    
+    .month {
+        padding: 10px;
+        min-height: 180px;
     }
     
     .stats-grid {
@@ -411,11 +440,23 @@ body {
     }
     
     .month {
-        padding: 15px;
+        padding: 8px;
+        min-height: 160px;
+    }
+    
+    .month-name {
+        font-size: 0.8rem;
+        margin-bottom: 6px;
     }
     
     .day {
-        font-size: 0.7rem;
+        font-size: 0.55rem;
+        min-height: 16px;
+    }
+    
+    .weekday {
+        font-size: 0.55rem;
+        padding: 2px 0;
     }
     
     .stats-panel {
